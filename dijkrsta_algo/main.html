@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstra's Algorithm - City Traffic Route Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dijkstra's Algorithm Visualizer</h1>
+            <p>Watch Dijkstra's shortest path algorithm in action with real road network data!</p>
+        </div>
+        
+        <div class="content">
+            <div class="sidebar">
+                <div class="control-section">
+                    <h3>Travel Mode</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button id="carMode" class="btn mode-btn" onclick="setTravelMode('car')" style="flex: 1; background: #2196F3; color: white;">
+                            Car
+                        </button>
+                        <button id="walkMode" class="btn mode-btn" onclick="setTravelMode('pedestrian')" style="flex: 1; background: #607D8B; color: white;">
+                            Walk
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Controls</h3>
+                    <button class="btn btn-primary" onclick="loadSampleCity()">Enable Route Selection</button>
+                    <button class="btn btn-success" onclick="runDijkstra()">Get Real Directions</button>
+                    <button class="btn" style="background: #9c27b0; color: white;" onclick="visualizeShortestPath()">Visualize Dijkstra</button>
+                    <button class="btn btn-secondary" onclick="resetMap()">Reset Map</button>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Route Statistics</h3>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <div class="label">Total Time</div>
+                            <div class="value" id="totalTime">--</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="label">Nodes</div>
+                            <div class="value" id="nodeCount">--</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Algorithm Steps</h3>
+                    <div class="algorithm-steps" id="steps">
+                        <div class="step">Click "Find Fastest Route" to start...</div>
+                    </div>
+                </div>
+                
+                <div class="legend">
+                    <h4 style="margin-bottom: 10px; color: #000;">Route Legend</h4>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 8px; font-style: italic;">
+                        Car Mode (🚗):
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #000; height: 6px;"></div>
+                        <span>Fastest Drive</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0066cc; height: 5px;"></div>
+                        <span>Shortest Drive</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00cc00; height: 4px;"></div>
+                        <span>Alternative Drive</span>
+                    </div>
+                    
+                    <div style="font-size: 0.85em; color: #666; margin: 12px 0 8px 0; font-style: italic;">
+                        Walk Mode (🚶):
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FF6B35; height: 6px;"></div>
+                        <span>Fastest Walk</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0066cc; height: 5px;"></div>
+                        <span>Shortest Walk</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9B59B6; height: 4px;"></div>
+                        <span>Alternative Walk</span>
+                    </div>
+                </div>
+                
+                <div class="legend" style="margin-top: 20px; border-top: 2px solid #ddd; padding-top: 15px;">
+                    <h4 style="margin-bottom: 10px; color: #9c27b0;">Dijkstra Visualization</h4>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4CAF50; height: 12px; width: 12px; border-radius: 50%; border: 2px solid white;"></div>
+                        <span>Start Node</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f44336; height: 12px; width: 12px; border-radius: 50%; border: 2px solid white;"></div>
+                        <span>End Node</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FFD700; height: 12px; width: 12px; border-radius: 50%; border: 2px solid white;"></div>
+                        <span>Currently Exploring</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FF9800; height: 12px; width: 12px; border-radius: 50%; border: 2px solid white;"></div>
+                        <span>Being Evaluated</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #E91E63; height: 12px; width: 12px; border-radius: 50%; border: 2px solid white;"></div>
+                        <span>Visited/Processed</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00FF00; height: 6px; border: 2px dashed #00FF00;"></div>
+                        <span>Shortest Path Found</span>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>How it works:</strong><br>
+                    1. Get real road routes from OpenStreetMap (OSRM) API<br>
+                    2. Click "Visualize Dijkstra" to see the algorithm<br>
+                    3. Watch as it explores nodes and finds the shortest path!
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
