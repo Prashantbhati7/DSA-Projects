@@ -6,7 +6,7 @@
 
 ```
 dijkrsta_algo/
-├── main.html          ← UI skeleton, layout, external CDN links
+├── index.html          ← UI skeleton, layout, external CDN links
 ├── styles.css         ← All CSS: layout, component styles, animations
 ├── script.js          ← Main logic: map, routing, graph, Dijkstra viz (1258 lines)
 ├── algo.js            ← Standalone pure Dijkstra implementation (example/reference)
@@ -60,7 +60,7 @@ Leaflet Map visualization (circle markers, polylines)
 
 ---
 
-### 📄 `main.html` — The UI Shell
+### 📄 `index.html` — The UI Shell
 
 **Purpose**: Structures the entire page layout and loads external dependencies.
 

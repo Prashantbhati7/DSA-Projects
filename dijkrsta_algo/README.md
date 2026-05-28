@@ -14,7 +14,7 @@ A simple project to visualize Dijkstra's shortest path algorithm using both Pyth
 
 ## Getting Started
 ### Web Version
-1. Open `main.html` in your browser.
+1. Open `index.html` in your browser.
 2. Interact with the visualizer to see Dijkstra's algorithm in action.
 
 ### Python Version
@@ -24,7 +24,7 @@ A simple project to visualize Dijkstra's shortest path algorithm using both Pyth
    ```
 
 ## File Structure
-- `main.html` — Web interface for visualization
+- `index.html` — Web interface for visualization
 - `script.js` — JavaScript logic for Dijkstra's algorithm
 - `styles.css` — Styling for the web app
 - `algo.js` — Additional algorithm logic
@@ -40,6 +40,3 @@ Dijkstra's algorithm finds the shortest path from a starting node to all other n
 - Continuing until all nodes are visited
 
 It's great for finding the shortest route in maps, networks, and more!
-
-## License
-MIT
